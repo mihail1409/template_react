@@ -14,6 +14,7 @@ function App() {
   const [artists, setArtists] = useState<IArtist[]>([]);
   const [hypeAlbums, setHypeAlbums] = useState<IContent[]>([]);
   const [recentlyTracks, setRecentlyTracks] = useState<ITrack[]>([]);
+  
 
 
   useEffect(() => {
@@ -34,9 +35,10 @@ function App() {
         console.log(error);
       });
   }, []);
-  
+ 
   function useUserAction(url: string, action: (value: AxiosResponse<any, any>) => void) {
     useEffect(() => {
+     if(!!token){
       axios
         .get(url, {
           headers: {
@@ -48,9 +50,10 @@ function App() {
         .catch((error) => {
           console.log(error);
         });
+      }
     }, [token]);
+  
   }
-
   useUserAction(
     "https://api.spotify.com/v1/artists?ids=3TVXtAsR1Inumwj472S9r4,5sBoNBXFMzoZjgHLbQueeG,6eUKZXaKkcviH0Ku9w2n3V,1Xyo4u8uXC1ZmMpatF05PJ",
     response => setArtists(response.data.artists)
@@ -70,6 +73,7 @@ function App() {
     "https://api.spotify.com/v1/albums?ids=4K6Rcm7dBmWNsHclnRWQO1,1atjqOZTCdrjxjMyCPZc2g,32iAEBstCjauDhyKpGjTuq,5r36AJ6VOJtp00oxSkBZ5h",
     response => setHypeAlbums(response.data.albums)
   );
+
 
   return (
     <div className="App">
